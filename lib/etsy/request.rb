@@ -73,9 +73,9 @@ module Etsy
     end
 
     def put
-      client.put(endpoint_url)
+      client.put(endpoint_url(include_query: false), query)
     end
-    
+
     def delete
       client.delete(endpoint_url)
     end
