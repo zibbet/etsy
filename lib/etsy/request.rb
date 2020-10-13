@@ -104,7 +104,10 @@ module Etsy
           k.nil? || v.nil? || (k.respond_to?(:empty?) && k.empty?) || (v.respond_to?(:empty?) && v.empty?)
         }.map { |k, v| "#{to_url(k.to_s)}=#{to_url(v)}" }.join('&')
       else
-        Addressable::URI.escape(val.to_s)
+        # Addressable::URI.escape(val.to_s) # TODO: rollback to URI.escape
+        # need to investigate
+        # since raising "Addressable::URI::InvalidURIError: Invalid scheme format:" with prod data
+        URI.escape(val.to_s, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))
       end
     end
 
